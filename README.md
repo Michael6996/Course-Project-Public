@@ -2,8 +2,11 @@
 Class Project
 
 Team Members: Michael Berceli(Solo)
+
 Team Name: Solo Calculatus
+
 Project Name: Calculator Solo
+
 Effort: Somewhat difficult, for coding. 
 
 What's its for: Basic Calculator that can be used for operators such as +,-,*,/, exponents, logarithms, basic trig, and Mean and median. Does not accept variables(as most calculators don't), accepts integers(ex. 1, 2, 3, etc...).
