@@ -1,1 +1,29 @@
 //UML:
+classDiagram
+    CourseProject <|-- BasicCalc
+    CourseProject <|-- ExponentCalc
+    CourseProject <|-- LogarithmCalc
+    CourseProject <|-- TrigonometryCalc
+    CourseProject <|-- Quartiles
+    CourseProject <|-- MeanMedian
+    
+    CourseProject: +Boolean isMath()
+    
+    class BasicCalc{
+      +"This is a type of Math"
+    }
+    class ExponentCalc{
+      +"This is a type of Math"
+    }
+    class LogarithmCalc{
+      +"This is a type of Math"
+    }
+    class TrigonometryCalc{
+      +"This is a type of Math"
+    }
+    class Quartiles{
+      +"This is a type of Math"
+    }
+    class MeanMedian{
+      +"This is a type of Math"
+    }
