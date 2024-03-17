@@ -1,1 +1,513 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.event.ActionListener;
+import java.math.BigInteger;
 
+
+public class CourseProject {
+    //Allows you to choose class
+    public boolean isMath() {
+       
+        return true;
+    }
+}
+ class BasicCalc extends CourseProject implements ActionListener{
+
+	
+    // JButton to create your buttons
+	JButton[] numberButtons = new JButton[10];
+	JButton[] functionButtons = new JButton[10];
+	JButton addButton,subtractButton,multiplyButton,divideButton;
+	JButton decimalButton, equalButton, deleteButton, clearButton, negativeButton;
+	JPanel panel;
+    JFrame frame;
+	JTextField textfield;
+	
+    double num1=0,num2=0,result=0;
+    //Has the .0
+	Font myFont = new Font("Ink Free",Font.BOLD,30);
+	//Font 
+	
+	char operator;
+	
+	BasicCalc(){
+		
+		frame = new JFrame("CourseProject Basic Calculator");
+		frame.setSize(420, 690);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //meme numbers
+		frame.setLayout(null);
+        //Sets frame for each
+		
+		textfield = new JTextField();
+        //order matters!!!!
+		textfield.setBounds(69, 45, 420, 50);
+        textfield.setFont(myFont);
+		textfield.setEditable(false);
+		//Buttons shown for user. Order matters!!!
+		addButton = new JButton("+");
+		subtractButton = new JButton("-");
+		multiplyButton = new JButton("*");
+		divideButton = new JButton("/");
+		decimalButton = new JButton(".");
+		equalButton = new JButton("=");
+		deleteButton = new JButton("Del");
+		clearButton = new JButton("Clr");
+		negativeButton = new JButton("(-)");
+		//Buttons order. If you changed the order your buttons would look funky.
+		functionButtons[0] = addButton;
+		functionButtons[1] = subtractButton;
+		functionButtons[2] = multiplyButton;
+		functionButtons[3] = divideButton;
+		functionButtons[4] = decimalButton;
+		functionButtons[5] = equalButton;
+		functionButtons[6] = deleteButton;
+		functionButtons[7] = clearButton;
+		functionButtons[8] = negativeButton;
+		//Number of buttons
+		for(int i =0;i<9;i++) {
+			functionButtons[i].addActionListener(this);
+			functionButtons[i].setFont(myFont);
+			functionButtons[i].setFocusable(false);
+		}
+		
+		for(int i =0;i<10;i++) {
+			numberButtons[i] = new JButton(String.valueOf(i));
+			numberButtons[i].addActionListener(this);
+			numberButtons[i].setFont(myFont);
+			numberButtons[i].setFocusable(false);
+		}
+		//Locations. Changing these values allows for sizes
+		negativeButton.setBounds(50,430,100,50);
+		deleteButton.setBounds(150,430,100,50);
+		clearButton.setBounds(250,430,100,50);
+		//Layouts
+		panel = new JPanel();
+		panel.setBounds(50, 100, 400, 300);
+		panel.setLayout(new GridLayout(4,4,10,10));
+//All buttons
+		panel.add(numberButtons[1]);
+		panel.add(numberButtons[2]);
+		panel.add(numberButtons[3]);
+		panel.add(addButton);
+		panel.add(numberButtons[4]);
+		panel.add(numberButtons[5]);
+		panel.add(numberButtons[6]);
+		panel.add(subtractButton);
+		panel.add(numberButtons[7]);
+		panel.add(numberButtons[8]);
+		panel.add(numberButtons[9]);
+		panel.add(multiplyButton);
+		panel.add(decimalButton);
+		panel.add(numberButtons[0]);
+		panel.add(equalButton);
+		panel.add(divideButton);
+		
+		frame.add(panel);
+		frame.add(negativeButton);
+		frame.add(deleteButton);
+		frame.add(clearButton);
+		frame.add(textfield);
+		frame.setVisible(true);
+	}
+	
+	public static void main(String[] args) {
+		//This statement allows it to run properly
+		BasicCalc basicCalc = new BasicCalc();
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		//Operations and actions
+		for(int i=0;i<10;i++) {
+            //This for loop determines how many values can be used(1-9)
+			if(e.getSource() == numberButtons[i]) {
+				textfield.setText(textfield.getText().concat(String.valueOf(i)));
+			}
+		}
+		if(e.getSource()==addButton) {
+			num1 = Double.parseDouble(textfield.getText());
+			operator ='+';
+			textfield.setText("");
+		}
+		if(e.getSource()==subtractButton) {
+			num1 = Double.parseDouble(textfield.getText());
+			operator ='-';
+			textfield.setText("");
+		}
+		if(e.getSource()==multiplyButton) {
+			num1 = Double.parseDouble(textfield.getText());
+			operator ='*';
+			textfield.setText("");
+		}
+		if(e.getSource()==divideButton) {
+			num1 = Double.parseDouble(textfield.getText());
+			operator ='/';
+			textfield.setText("");
+		}if(e.getSource()==decimalButton) {
+			textfield.setText(textfield.getText().concat("."));
+		}
+        //Switch statement for math formulas
+		if(e.getSource()==equalButton) {
+			num2=Double.parseDouble(textfield.getText());
+			
+			switch(operator) {
+			case'+':
+				result=num1+num2;
+				break;
+			case'-':
+				result=num1-num2;
+				break;
+			case'*':
+				result=num1*num2;
+				break;
+			case'/':
+            //if else statement to check for error
+            if (num2 != 0) {
+                result=num1/num2;
+            } else {
+                System.out.println("Error: You cannot divide by zero!");
+            }
+				
+				break;
+            default:
+            //Invalid input 
+                break;
+			}
+			textfield.setText(String.valueOf(result));
+			num1=result;
+		}
+        //deletion
+		if(e.getSource()==deleteButton) {
+			String string = textfield.getText();
+			textfield.setText("");
+			for(int i=0;i<string.length()-1;i++) {
+				textfield.setText(textfield.getText()+string.charAt(i));
+			}
+		}
+        //clear button
+		if(e.getSource()==clearButton) {
+			textfield.setText("");
+		}
+        //negative, make sure you start with a number before hitting the negative button to work
+		if(e.getSource()==negativeButton) {
+			double temp = Double.parseDouble(textfield.getText());
+			temp*=-1;
+			textfield.setText(String.valueOf(temp));
+		}
+	} 
+}
+class ExponentCalculator extends JFrame implements ActionListener {
+    private JTextField baseField, powerField, resultField;
+//Returns and exponent usage
+    public ExponentCalculator() {
+        setTitle("Exponent Calculator");
+        setSize(300, 150);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new GridLayout(4, 2));
+
+        JLabel baseLabel = new JLabel("Base:");
+        baseField = new JTextField(10);
+        //base
+
+        JLabel powerLabel = new JLabel("Power:");
+        powerField = new JTextField(10);
+        //power
+
+        JButton calculateButton = new JButton("Calculate");
+        calculateButton.addActionListener(this);
+        //Calculate answer
+
+        JLabel resultLabel = new JLabel("Result:");
+        resultField = new JTextField(10);
+        resultField.setEditable(false);
+        //sizes
+
+        add(baseLabel); //Base label
+        add(baseField);
+        add(powerLabel); //Power label
+        add(powerField);
+        add(new JLabel()); // Empty label for spacing to avoid problems
+        add(calculateButton);
+        add(resultLabel); //result 
+        add(resultField);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        try {
+            //double for .0
+            double base = Double.parseDouble(baseField.getText());
+            double power = Double.parseDouble(powerField.getText());
+            double result = Math.pow(base, power);
+            //Math formula is base^power=result
+            resultField.setText(String.valueOf(result));
+        } catch (NumberFormatException ex) {
+            resultField.setText("Invalid input");
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new ExponentCalculator().setVisible(true);
+            //visibility
+        });
+    }
+}
+class LogarithmCalculator extends CourseProject{
+    public static void main(String[] args) {
+        // Create a JFrame (window), log inputs cannot be negative!
+        JFrame frame = new JFrame("Logarithm Calculator");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 200);
+
+        // Create a JPanel to hold components for user
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(3, 2));
+
+        // Create labels and text fields for user access
+        JLabel numberLabel = new JLabel("Enter the number:");
+        JTextField numberField = new JTextField();
+        JLabel baseLabel = new JLabel("Enter the base:");
+        JTextField baseField = new JTextField();
+        JButton calculateButton = new JButton("Calculate");
+
+        // Add components to the panel
+        panel.add(numberLabel);
+        panel.add(numberField);
+        panel.add(baseLabel);
+        panel.add(baseField);
+        panel.add(calculateButton);
+
+        // Add action listener for the button for user
+        calculateButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    double number = Double.parseDouble(numberField.getText());
+                    double base = Double.parseDouble(baseField.getText());
+                    //catching negative error
+                    if (number <= 0 || base <= 0) {
+                        JOptionPane.showMessageDialog(frame,
+                                "Invalid input. Please enter positive numeric values.",
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    // Calculate the natural logarithm (ln) of the number
+                    double lnNumber = Math.log(number);
+                    // Calculate the natural logarithm of the base
+                    double lnBase = Math.log(base);
+                    // Calculate the logarithm with the custom base
+                    double logarithm = lnNumber / lnBase;//double allows for .0
+                    //logarithm is inverse equation for exponent
+
+                    // Display the results and checks for errors
+                    JOptionPane.showMessageDialog(frame,
+                            "The logarithm of " + number + " with base " + base + " is " + logarithm,
+                            "Result", JOptionPane.INFORMATION_MESSAGE);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(frame,
+                            "Invalid input. Please enter valid numeric values.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        // Add the panels to the frame
+        frame.add(panel);
+        frame.setVisible(true);
+    }
+}
+class TrigonometryCalc extends CourseProject {
+    // GUI user components
+    private JFrame frame;
+    private JTextField angleField;
+    private JLabel resultLabel;
+//returns
+    public TrigonometryCalc() {
+        // Initialize components
+        frame = new JFrame("Trigonometry Calculator");
+        angleField = new JTextField(10);
+        resultLabel = new JLabel();
+
+        // Set up the layout
+        JPanel panel = new JPanel();
+        panel.add(new JLabel("Enter the angle in degrees: "));
+        //User input
+        panel.add(angleField);
+        panel.add(new JButton(new AbstractAction("Calculate") {
+            @Override
+            //Override for actions
+            public void actionPerformed(ActionEvent e) {
+                calculateTrigValues();
+            }
+        }));
+        panel.add(resultLabel);
+
+        frame.add(panel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+        //Frames
+    }
+
+    private void calculateTrigValues() {
+        try {
+            //Double for .0 and this explains the math
+            double degrees = Double.parseDouble(angleField.getText());
+            //Degrees is converted to Radians
+            double radians = Math.toRadians(degrees);
+            //Sine, cosine, tangent are all basic trig functions in radians
+            double sinValue = Math.sin(radians);
+            double cosValue = Math.cos(radians);
+            double tanValue = Math.tan(radians);
+            //Results
+            resultLabel.setText("sin(" + degrees + ") = " + sinValue +
+                    ", cos(" + degrees + ") = " + cosValue +
+                    ", tan(" + degrees + ") = " + tanValue);
+        } catch (NumberFormatException ex) {
+            //Catch errors
+            resultLabel.setText("Invalid input. Please enter a valid angle.");
+        }
+    }
+
+    public static void main(String[] args) {
+        //SwingUtilities helps the program run
+        SwingUtilities.invokeLater(() -> new TrigonometryCalc());
+    }
+}
+class MeanMedianCalculator extends JFrame implements ActionListener {
+    //Basic instruction
+    private JTextField inputField;
+    private JButton calculateButton;
+    private JLabel resultLabel;
+//Returns
+    public MeanMedianCalculator() {
+        //Layout
+        super("Mean and Median Calculator");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new FlowLayout());
+        //input
+        inputField = new JTextField(20);
+        calculateButton = new JButton("Calculate");
+        resultLabel = new JLabel();
+        //ActionListener
+        calculateButton.addActionListener(this);
+        //User input and labels
+        add(new JLabel("Enter numbers (comma-separated):"));
+        add(inputField);
+        add(calculateButton);
+        add(resultLabel);
+
+        pack();
+        setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        //Actions and e.getSource()
+        if (e.getSource() == calculateButton) {
+            String input = inputField.getText();
+            String[] numberStrings = input.split(",");
+            double[] numbers = new double[numberStrings.length];
+            //double means .0 result
+
+            try {
+                for (int i = 0; i < numberStrings.length; i++) {
+                    numbers[i] = Double.parseDouble(numberStrings[i].trim());
+                }
+                //try loop for Math
+                double mean = calculateMean(numbers);
+                double median = calculateMedian(numbers);
+
+                resultLabel.setText("Mean: " + mean + "   Median: " + median);
+            } catch (NumberFormatException ex) {
+                resultLabel.setText("Invalid input. Please enter valid numbers.");
+                //Catches errors
+            }
+        }
+    }
+//Math for mean
+    public static double calculateMean(double[] numbers) {
+        double sum = 0;
+        for (double num : numbers) {
+            sum += num;
+        }
+        return sum / numbers.length;
+    }
+//Math for Median
+    public static double calculateMedian(double[] numbers) {
+        int middle = numbers.length / 2;
+        if (numbers.length % 2 == 1) {
+            return numbers[middle];
+        } else {
+            return (numbers[middle - 1] + numbers[middle]) / 2.0;
+        }
+    }
+    //Allows it to run
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new MeanMedianCalculator());
+    }
+}
+class FactorialCalculator extends JFrame implements ActionListener {
+    //fields and such for visuals
+    private JTextField inputField;
+    private JButton calculateButton;
+    private JLabel resultLabel;
+//allows it to run: public FactorialCalculator() {
+    public FactorialCalculator() {
+        super("Factorial Calculator");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new FlowLayout());
+//Text,button, and label pieces(visuals)
+        inputField = new JTextField(50);
+        calculateButton = new JButton("Calculate");
+        resultLabel = new JLabel();
+
+        calculateButton.addActionListener(this);
+//Must be positive or 0 other wise it is an non defined integer
+//This stuff directly below is for the calculator
+        add(new JLabel("Enter a non-negative integer:"));
+        add(inputField);
+        add(calculateButton);
+        add(resultLabel);
+        pack();
+        setVisible(true);
+    }
+//Actions
+    public void actionPerformed(ActionEvent e) {
+        //e.getsource() is extremely important for this calculator
+        if (e.getSource() == calculateButton) {
+            try {
+                //Required for variable
+                //I chose F for factorial
+                int f = Integer.parseInt(inputField.getText());
+ //need big integer aka import java.math.BigInteger; to avoid errors in your math(getting too big of a number will result in =0 error)
+                BigInteger factorial = calculateFactorial(f);
+                resultLabel.setText("Factorial of " + f + " = " + factorial);
+                //catch for errors
+            } catch (NumberFormatException ex) {
+                //Catches exceptions such as a letter
+                resultLabel.setText("Invalid input. Please enter a valid non-negative integer.");
+            }
+        }
+    }
+    public static BigInteger calculateFactorial(int n) {
+        //Exception rules
+    if (n < 0) {
+        throw new IllegalArgumentException("Input must be a non-negative integer.");
+        //Basic Factorial rule 1.Cannot be a negative
+    }
+
+    BigInteger result = BigInteger.ONE;
+    for (int i = 1; i <= n; i++) {
+        result = result.multiply(BigInteger.valueOf(i));
+    }
+    return result;
+     //Basic Factorial rule 2.If 0 you will get a 1
+}
+/*Warning: The longer the number you put in the calculator, the longer it will take to solve, usually not an issue
+however it can be a problem if you put a number like 9999999 and this will likely cause it to fail*/
+public static void main(String[] args) {
+    new FactorialCalculator();
+}
+}
