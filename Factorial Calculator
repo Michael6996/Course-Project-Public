@@ -1,0 +1,78 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.event.ActionListener;
+import java.math.BigInteger;
+
+
+public class CourseProject {
+    //Allows you to choose class
+    public boolean isMath() {
+       
+        return true;
+    }
+}
+
+class FactorialCalculator extends JFrame implements ActionListener {
+    //fields and such for visuals
+    private JTextField inputField;
+    private JButton calculateButton;
+    private JLabel resultLabel;
+//allows it to run: public FactorialCalculator() {
+    public FactorialCalculator() {
+        super("Factorial Calculator");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new FlowLayout());
+//Text,button, and label pieces(visuals)
+        inputField = new JTextField(50);
+        calculateButton = new JButton("Calculate");
+        resultLabel = new JLabel();
+
+        calculateButton.addActionListener(this);
+//Must be positive or 0 other wise it is an non defined integer
+//This stuff directly below is for the calculator
+        add(new JLabel("Enter a non-negative integer:"));
+        add(inputField);
+        add(calculateButton);
+        add(resultLabel);
+        pack();
+        setVisible(true);
+    }
+//Actions
+    public void actionPerformed(ActionEvent e) {
+        //e.getsource() is extremely important for this calculator
+        if (e.getSource() == calculateButton) {
+            try {
+                //Required for variable
+                //I chose F for factorial
+                int f = Integer.parseInt(inputField.getText());
+ //need big integer aka import java.math.BigInteger; to avoid errors in your math(getting too big of a number will result in =0 error)
+                BigInteger factorial = calculateFactorial(f);
+                resultLabel.setText("Factorial of " + f + " = " + factorial);
+                //catch for errors
+            } catch (NumberFormatException ex) {
+                //Catches exceptions such as a letter
+                resultLabel.setText("Invalid input. Please enter a valid non-negative integer.");
+            }
+        }
+    }
+    public static BigInteger calculateFactorial(int n) {
+        //Exception rules
+    if (n < 0) {
+        throw new IllegalArgumentException("Input must be a non-negative integer.");
+        //Basic Factorial rule 1.Cannot be a negative
+    }
+
+    BigInteger result = BigInteger.ONE;
+    for (int i = 1; i <= n; i++) {
+        result = result.multiply(BigInteger.valueOf(i));
+    }
+    return result;
+     //Basic Factorial rule 2.If 0 you will get a 1
+}
+/*Warning: The longer the number you put in the calculator, the longer it will take to solve, usually not an issue
+however it can be a problem if you put a number like 9999999 and this will likely cause it to fail*/
+public static void main(String[] args) {
+    new FactorialCalculator();
+}
+}
