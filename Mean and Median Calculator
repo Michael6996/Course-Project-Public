@@ -1,0 +1,73 @@
+
+class MeanMedianCalculator extends JFrame implements ActionListener {
+    //Basic instruction
+    private JTextField inputField;
+    private JButton calculateButton;
+    private JLabel resultLabel;
+//Returns
+    public MeanMedianCalculator() {
+        //Layout
+        super("Mean and Median Calculator");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new FlowLayout());
+        //input
+        inputField = new JTextField(20);
+        calculateButton = new JButton("Calculate");
+        resultLabel = new JLabel();
+        //ActionListener
+        calculateButton.addActionListener(this);
+        //User input and labels
+        add(new JLabel("Enter numbers (comma-separated):"));
+        add(inputField);
+        add(calculateButton);
+        add(resultLabel);
+
+        pack();
+        setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        //Actions and e.getSource()
+        if (e.getSource() == calculateButton) {
+            String input = inputField.getText();
+            String[] numberStrings = input.split(",");
+            double[] numbers = new double[numberStrings.length];
+            //double means .0 result
+
+            try {
+                for (int i = 0; i < numberStrings.length; i++) {
+                    numbers[i] = Double.parseDouble(numberStrings[i].trim());
+                }
+                //try loop for Math
+                double mean = calculateMean(numbers);
+                double median = calculateMedian(numbers);
+
+                resultLabel.setText("Mean: " + mean + "   Median: " + median);
+            } catch (NumberFormatException ex) {
+                resultLabel.setText("Invalid input. Please enter valid numbers.");
+                //Catches errors
+            }
+        }
+    }
+//Math for mean
+    public static double calculateMean(double[] numbers) {
+        double sum = 0;
+        for (double num : numbers) {
+            sum += num;
+        }
+        return sum / numbers.length;
+    }
+//Math for Median
+    public static double calculateMedian(double[] numbers) {
+        int middle = numbers.length / 2;
+        if (numbers.length % 2 == 1) {
+            return numbers[middle];
+        } else {
+            return (numbers[middle - 1] + numbers[middle]) / 2.0;
+        }
+    }
+    //Allows it to run
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new MeanMedianCalculator());
+    }
+}
