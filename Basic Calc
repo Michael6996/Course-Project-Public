@@ -1,0 +1,200 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.event.ActionListener;
+import java.math.BigInteger;
+
+
+public class CourseProject {
+    //Allows you to choose class
+    public boolean isMath() {
+       
+        return true;
+    }
+}
+ class BasicCalc extends CourseProject implements ActionListener{
+
+	
+    // JButton to create your buttons
+	JButton[] numberButtons = new JButton[10];
+	JButton[] functionButtons = new JButton[10];
+	JButton addButton,subtractButton,multiplyButton,divideButton;
+	JButton decimalButton, equalButton, deleteButton, clearButton, negativeButton;
+	JPanel panel;
+    JFrame frame;
+	JTextField textfield;
+	
+    double num1=0,num2=0,result=0;
+    //Has the .0
+	Font myFont = new Font("Ink Free",Font.BOLD,30);
+	//Font 
+	
+	char operator;
+	
+	BasicCalc(){
+		
+		frame = new JFrame("CourseProject Basic Calculator");
+		frame.setSize(420, 690);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //meme numbers
+		frame.setLayout(null);
+        //Sets frame for each
+		
+		textfield = new JTextField();
+        //order matters!!!!
+		textfield.setBounds(69, 45, 420, 50);
+        textfield.setFont(myFont);
+		textfield.setEditable(false);
+		//Buttons shown for user. Order matters!!!
+		addButton = new JButton("+");
+		subtractButton = new JButton("-");
+		multiplyButton = new JButton("*");
+		divideButton = new JButton("/");
+		decimalButton = new JButton(".");
+		equalButton = new JButton("=");
+		deleteButton = new JButton("Del");
+		clearButton = new JButton("Clr");
+		negativeButton = new JButton("(-)");
+		//Buttons order. If you changed the order your buttons would look funky.
+		functionButtons[0] = addButton;
+		functionButtons[1] = subtractButton;
+		functionButtons[2] = multiplyButton;
+		functionButtons[3] = divideButton;
+		functionButtons[4] = decimalButton;
+		functionButtons[5] = equalButton;
+		functionButtons[6] = deleteButton;
+		functionButtons[7] = clearButton;
+		functionButtons[8] = negativeButton;
+		//Number of buttons
+		for(int i =0;i<9;i++) {
+			functionButtons[i].addActionListener(this);
+			functionButtons[i].setFont(myFont);
+			functionButtons[i].setFocusable(false);
+		}
+		
+		for(int i =0;i<10;i++) {
+			numberButtons[i] = new JButton(String.valueOf(i));
+			numberButtons[i].addActionListener(this);
+			numberButtons[i].setFont(myFont);
+			numberButtons[i].setFocusable(false);
+		}
+		//Locations. Changing these values allows for sizes
+		negativeButton.setBounds(50,430,100,50);
+		deleteButton.setBounds(150,430,100,50);
+		clearButton.setBounds(250,430,100,50);
+		//Layouts
+		panel = new JPanel();
+		panel.setBounds(50, 100, 400, 300);
+		panel.setLayout(new GridLayout(4,4,10,10));
+//All buttons
+		panel.add(numberButtons[1]);
+		panel.add(numberButtons[2]);
+		panel.add(numberButtons[3]);
+		panel.add(addButton);
+		panel.add(numberButtons[4]);
+		panel.add(numberButtons[5]);
+		panel.add(numberButtons[6]);
+		panel.add(subtractButton);
+		panel.add(numberButtons[7]);
+		panel.add(numberButtons[8]);
+		panel.add(numberButtons[9]);
+		panel.add(multiplyButton);
+		panel.add(decimalButton);
+		panel.add(numberButtons[0]);
+		panel.add(equalButton);
+		panel.add(divideButton);
+		
+		frame.add(panel);
+		frame.add(negativeButton);
+		frame.add(deleteButton);
+		frame.add(clearButton);
+		frame.add(textfield);
+		frame.setVisible(true);
+	}
+	
+	public static void main(String[] args) {
+		//This statement allows it to run properly
+		BasicCalc basicCalc = new BasicCalc();
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		//Operations and actions
+		for(int i=0;i<10;i++) {
+            //This for loop determines how many values can be used(1-9)
+			if(e.getSource() == numberButtons[i]) {
+				textfield.setText(textfield.getText().concat(String.valueOf(i)));
+			}
+		}
+		if(e.getSource()==addButton) {
+			num1 = Double.parseDouble(textfield.getText());
+			operator ='+';
+			textfield.setText("");
+		}
+		if(e.getSource()==subtractButton) {
+			num1 = Double.parseDouble(textfield.getText());
+			operator ='-';
+			textfield.setText("");
+		}
+		if(e.getSource()==multiplyButton) {
+			num1 = Double.parseDouble(textfield.getText());
+			operator ='*';
+			textfield.setText("");
+		}
+		if(e.getSource()==divideButton) {
+			num1 = Double.parseDouble(textfield.getText());
+			operator ='/';
+			textfield.setText("");
+		}if(e.getSource()==decimalButton) {
+			textfield.setText(textfield.getText().concat("."));
+		}
+        //Switch statement for math formulas
+		if(e.getSource()==equalButton) {
+			num2=Double.parseDouble(textfield.getText());
+			
+			switch(operator) {
+			case'+':
+				result=num1+num2;
+				break;
+			case'-':
+				result=num1-num2;
+				break;
+			case'*':
+				result=num1*num2;
+				break;
+			case'/':
+            //if else statement to check for error
+            if (num2 != 0) {
+                result=num1/num2;
+            } else {
+                System.out.println("Error: You cannot divide by zero!");
+            }
+				
+				break;
+            default:
+            //Invalid input 
+                break;
+			}
+			textfield.setText(String.valueOf(result));
+			num1=result;
+		}
+        //deletion
+		if(e.getSource()==deleteButton) {
+			String string = textfield.getText();
+			textfield.setText("");
+			for(int i=0;i<string.length()-1;i++) {
+				textfield.setText(textfield.getText()+string.charAt(i));
+			}
+		}
+        //clear button
+		if(e.getSource()==clearButton) {
+			textfield.setText("");
+		}
+        //negative, make sure you start with a number before hitting the negative button to work
+		if(e.getSource()==negativeButton) {
+			double temp = Double.parseDouble(textfield.getText());
+			temp*=-1;
+			textfield.setText(String.valueOf(temp));
+		}
+	} 
+}
