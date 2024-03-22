@@ -1,0 +1,72 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.event.ActionListener;
+import java.math.BigInteger;
+
+
+public class CourseProject {
+    //Allows you to choose class
+    public boolean isMath() {
+       
+        return true;
+    }
+}
+class TrigonometryCalc extends CourseProject {
+    // GUI user components
+    private JFrame frame;
+    private JTextField angleField;
+    private JLabel resultLabel;
+//returns
+    public TrigonometryCalc() {
+        // Initialize components
+        frame = new JFrame("Trigonometry Calculator");
+        angleField = new JTextField(10);
+        resultLabel = new JLabel();
+
+        // Set up the layout
+        JPanel panel = new JPanel();
+        panel.add(new JLabel("Enter the angle in degrees: "));
+        //User input
+        panel.add(angleField);
+        panel.add(new JButton(new AbstractAction("Calculate") {
+            @Override
+            //Override for actions
+            public void actionPerformed(ActionEvent e) {
+                calculateTrigValues();
+            }
+        }));
+        panel.add(resultLabel);
+
+        frame.add(panel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+        //Frames
+    }
+
+    private void calculateTrigValues() {
+        try {
+            //Double for .0 and this explains the math
+            double degrees = Double.parseDouble(angleField.getText());
+            //Degrees is converted to Radians
+            double radians = Math.toRadians(degrees);
+            //Sine, cosine, tangent are all basic trig functions in radians
+            double sinValue = Math.sin(radians);
+            double cosValue = Math.cos(radians);
+            double tanValue = Math.tan(radians);
+            //Results
+            resultLabel.setText("sin(" + degrees + ") = " + sinValue +
+                    ", cos(" + degrees + ") = " + cosValue +
+                    ", tan(" + degrees + ") = " + tanValue);
+        } catch (NumberFormatException ex) {
+            //Catch errors
+            resultLabel.setText("Invalid input. Please enter a valid angle.");
+        }
+    }
+
+    public static void main(String[] args) {
+        //SwingUtilities helps the program run
+        SwingUtilities.invokeLater(() -> new TrigonometryCalc());
+    }
+}
