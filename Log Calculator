@@ -1,0 +1,79 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.event.ActionListener;
+import java.math.BigInteger;
+
+
+public class CourseProject {
+    //Allows you to choose class
+    public boolean isMath() {
+       
+        return true;
+    }
+}
+
+class LogarithmCalculator extends CourseProject{
+    public static void main(String[] args) {
+        // Create a JFrame (window), log inputs cannot be negative!
+        JFrame frame = new JFrame("Logarithm Calculator");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 200);
+
+        // Create a JPanel to hold components for user
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(3, 2));
+
+        // Create labels and text fields for user access
+        JLabel numberLabel = new JLabel("Enter the number:");
+        JTextField numberField = new JTextField();
+        JLabel baseLabel = new JLabel("Enter the base:");
+        JTextField baseField = new JTextField();
+        JButton calculateButton = new JButton("Calculate");
+
+        // Add components to the panel
+        panel.add(numberLabel);
+        panel.add(numberField);
+        panel.add(baseLabel);
+        panel.add(baseField);
+        panel.add(calculateButton);
+
+        // Add action listener for the button for user
+        calculateButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    double number = Double.parseDouble(numberField.getText());
+                    double base = Double.parseDouble(baseField.getText());
+                    //catching negative error
+                    if (number <= 0 || base <= 0) {
+                        JOptionPane.showMessageDialog(frame,
+                                "Invalid input. Please enter positive numeric values.",
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    // Calculate the natural logarithm (ln) of the number
+                    double lnNumber = Math.log(number);
+                    // Calculate the natural logarithm of the base
+                    double lnBase = Math.log(base);
+                    // Calculate the logarithm with the custom base
+                    double logarithm = lnNumber / lnBase;//double allows for .0
+                    //logarithm is inverse equation for exponent
+
+                    // Display the results and checks for errors
+                    JOptionPane.showMessageDialog(frame,
+                            "The logarithm of " + number + " with base " + base + " is " + logarithm,
+                            "Result", JOptionPane.INFORMATION_MESSAGE);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(frame,
+                            "Invalid input. Please enter valid numeric values.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        // Add the panels to the frame
+        frame.add(panel);
+        frame.setVisible(true);
+    }
+}
