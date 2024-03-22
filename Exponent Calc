@@ -1,0 +1,71 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.event.ActionListener;
+import java.math.BigInteger;
+
+
+public class CourseProject {
+    //Allows you to choose class
+    public boolean isMath() {
+       
+        return true;
+    }
+}
+
+class ExponentCalculator extends JFrame implements ActionListener {
+    private JTextField baseField, powerField, resultField;
+//Returns and exponent usage
+    public ExponentCalculator() {
+        setTitle("Exponent Calculator");
+        setSize(300, 150);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new GridLayout(4, 2));
+
+        JLabel baseLabel = new JLabel("Base:");
+        baseField = new JTextField(10);
+        //base
+
+        JLabel powerLabel = new JLabel("Power:");
+        powerField = new JTextField(10);
+        //power
+
+        JButton calculateButton = new JButton("Calculate");
+        calculateButton.addActionListener(this);
+        //Calculate answer
+
+        JLabel resultLabel = new JLabel("Result:");
+        resultField = new JTextField(10);
+        resultField.setEditable(false);
+        //sizes
+
+        add(baseLabel); //Base label
+        add(baseField);
+        add(powerLabel); //Power label
+        add(powerField);
+        add(new JLabel()); // Empty label for spacing to avoid problems
+        add(calculateButton);
+        add(resultLabel); //result 
+        add(resultField);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        try {
+            //double for .0
+            double base = Double.parseDouble(baseField.getText());
+            double power = Double.parseDouble(powerField.getText());
+            double result = Math.pow(base, power);
+            //Math formula is base^power=result
+            resultField.setText(String.valueOf(result));
+        } catch (NumberFormatException ex) {
+            resultField.setText("Invalid input");
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new ExponentCalculator().setVisible(true);
+            //visibility
+        });
+    }
+}
